@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{@types/react, @types/react-router-dom, @types/styled-components}" />
+    <file url="PROJECT" libraries="{@types/electron-devtools-installer, @types/electron-json-storage, @types/electron-packager, @types/electron-winstaller, @types/react, @types/react-router-dom, @types/scss-parser, @types/styled-components}" />
   </component>
 </project>

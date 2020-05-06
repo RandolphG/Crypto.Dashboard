@@ -8,5 +8,13 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="@types/react" level="application" />
+    <orderEntry type="library" name="@types/react-router-dom" level="application" />
+    <orderEntry type="library" name="@types/styled-components" level="application" />
+    <orderEntry type="library" name="@types/scss-parser" level="application" />
+    <orderEntry type="library" name="@types/electron-devtools-installer" level="application" />
+    <orderEntry type="library" name="@types/electron-json-storage" level="application" />
+    <orderEntry type="library" name="@types/electron-packager" level="application" />
+    <orderEntry type="library" name="@types/electron-winstaller" level="application" />
   </component>
 </module>
