@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { StateContext } from "./globalContext";
+import { useGlobalStateContext } from "./globalContext";
 const SET_PAGE = "SET_PAGE";
 
 // BAR STYLED COMPONENT
@@ -15,12 +15,13 @@ const Bar = styled.div`
 const StyledBtn = styled.div`
   font-size: 1rem;
   cursor: pointer;
-  color: yellow;
+  color: darkmagenta;
   ${(props) =>
     props.active &&
     css`
-      background: lightcoral;
-      color: blue;
+      //background: lightcoral;
+      color: yellow;
+      text-shadow: 3px 4px 10px aqua;
     `}
 `;
 
@@ -32,21 +33,23 @@ const StyledBtn = styled.div`
  * @constructor
  */
 function ControlBtn({ value, active }) {
-  const [dispatch, page] = useContext(StateContext);
-  const setPage = (e) => {
-    console.log(`SET_PAGE: ${value}`);
-    dispatch({ type: SET_PAGE, page: value });
-    localStorage.setItem("page", JSON.stringify(e));
-  };
+  const [btnName, setName] = useState(value);
+  const [dispatch, state] = useGlobalStateContext();
 
+  const cb = () => {
+    setName(value);
+  };
+  const [select, setSelect] = useState(false);
   useEffect(() => {
-    console.log(`localStorage value: ${value}`);
-    localStorage.setItem("page", JSON.stringify(value));
-  }, [page]);
+    // localStorage.setItem("page", JSON.stringify(value));
+    // const page = localStorage.getItem("page");
+    // setSelect(!selec);
+    cb();
+  }, [value]);
   return (
     <StyledBtn
-      onClick={(e) => dispatch({ type: SET_PAGE, page: e.target.value })}
-      active={page === value}
+      onClick={(e) => dispatch({ type: SET_PAGE, page: value })}
+      active={btnName == state}
     >
       {value}
     </StyledBtn>
@@ -61,16 +64,11 @@ function toProperCase(lower) {
 
 // APP BAR
 const AppBar = () => {
-  const selectionBtns = {
-    dashboard: { label: "dashboard" },
-    settings: { label: "dashboard" },
-  };
   return (
     <Bar>
-      <div>CRYPTO-DASH</div>
-      {Object.keys(selectionBtns).map((title, index) => (
-        <ControlBtn key={title} value={title} {...`${console.log(title)}`} />
-      ))}
+      <span>CRYPTO-DASH </span>
+      <ControlBtn value={"dashboard"} />
+      <ControlBtn value={"settings"} />
     </Bar>
   );
 };
