@@ -1,19 +1,19 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { css, createGlobalStyle } from "styled-components";
 import normalize from "styled-normalize";
 
 export const GlobalStyle = createGlobalStyle`
 ${normalize}
 * {
   text-decoration: none;
-  cursor: none;
+  //cursor: none;
 }
+
 html {
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
     font-size: 16px;
-  
-  
 }
+
 body {
   font-size: 16px;
   font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -37,4 +37,45 @@ export const Layout = styled.div`
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+`;
+
+// BAR STYLED COMPONENT
+export const Bar = styled.div`
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 190px auto 100px 100px;
+  font-size: 1rem;
+`;
+
+// LOGO STYLED COMPONENT
+export const LOGO = styled.div`
+  margin-left: 16px;
+  font-size: 2rem;
+`;
+
+// CONTROLBTN STYLED COMPONENT
+export const StyledBtn = styled.div`
+  font-size: 1rem;
+  cursor: pointer;
+  color: white;
+  ${(props) =>
+    props.active &&
+    css`
+      color: yellow;
+      text-shadow: 3px 4px 10px aqua;
+    `}
+  &:hover {
+    color: deeppink;
+  }
+`;
+// CONFIRM BTN
+export const ConfirmBtn = styled.div`
+  margin: 20px;
+  color: green;
+`;
+
+// CENTER DIV
+export const CenterDiv = styled.div`
+  display: grid;
+  justify-content: center;
 `;

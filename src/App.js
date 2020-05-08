@@ -1,17 +1,12 @@
 import React from "react";
-import { GlobalStyle, Layout } from "./styles/Layout";
-import AppBar from "./AppBar";
+import { Layout } from "./styles/Layout";
 
-import { GlobalProvider } from "./globalContext";
+import GlobalContext from "./GlobalContext";
 
 function App() {
   return (
     <Layout>
-      <GlobalProvider>
-        <GlobalStyle />
-        <AppBar />
-        <span>EMPTY SPACE</span>
-      </GlobalProvider>
+      <GlobalContext />
     </Layout>
   );
 }
