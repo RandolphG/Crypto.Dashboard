@@ -2,11 +2,16 @@ import React, { createContext, useReducer, useContext } from "react";
 import { GlobalStyle } from "./styles/Layout";
 import AppBar from "./AppBar";
 import Settings from "./Settings";
+const cc = require("cryptocompare");
 
 // INITIAL STATE
 const initialState = {
   page: "dashboard",
   firstVisit: false,
+  coinList: async () => {
+    let coins = fetchCoins();
+    await SetCoins(coins);
+  },
 };
 
 // ACTIONS
@@ -15,6 +20,30 @@ const actions = {
   SAVE_SETTINGS: "SAVE_SETTINGS",
   CONFIRM_FAVORITES: "CONFIRM_FAVORITES",
   FIRST_VISIT: "FIRST_VISIT",
+  COIN_LIST: "COIN_LIST",
+};
+
+/**
+ *
+ * @param coins
+ * @returns {Promise<void>}
+ * @constructor
+ */
+async function SetCoins(coins) {
+  console.log(coins);
+  const [dispatch] = useReducer(reducer);
+  dispatch({ type: actions.COIN_LIST, coins });
+  return <div></div>;
+}
+
+/**
+ *
+ * @returns {Promise<*>}
+ */
+const fetchCoins = async () => {
+  let coinList = (await cc.coinList()).Data;
+  console.log(coinList);
+  return coinList;
 };
 
 /**
@@ -23,7 +52,6 @@ const actions = {
  */
 function SaveSettings() {
   console.log("SAVING SETTINGS");
-  const { page, setPage } = useGlobalStateContext(StateContext);
 
   let data = JSON.parse(localStorage.getItem("cryptodash"));
   if (!data) {
@@ -32,6 +60,9 @@ function SaveSettings() {
   return {};
 }
 
+/**
+ * confirm address
+ */
 const confirmFavorites = () => {
   console.log("confirmFavorites");
   localStorage.setItem("cryptodash", JSON.stringify("test"));
@@ -73,11 +104,21 @@ const reducer = (state, action) => {
         ...state,
         confirmFavorites: confirmFavorites(),
       };
+    case actions.COIN_LIST:
+      return {
+        ...state,
+        coinList: action.coinList,
+      };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
 };
 
+/**
+ * global context
+ * @returns {*}
+ * @constructor
+ */
 export default function GlobalContext() {
   return (
     <GlobalProvider>
@@ -100,10 +141,8 @@ function GlobalProvider({ children }) {
   const value = {
     firstVisit: state.firstVisit,
     page: state.page,
-    setPage: (page) => {
-      dispatch({ type: actions.SET_PAGE, page });
-    },
-    SaveSettings: () => {
+    coinList: state.coinList,
+    SaveSettings: async () => {
       dispatch({ type: actions.SAVE_SETTINGS });
     },
     confirmFavorites: (visit) => {
