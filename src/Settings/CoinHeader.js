@@ -1,5 +1,5 @@
 import React from "react";
-import { CoinHeaderGrid, CoinSymbol } from "../styles/Layout";
+import { CoinHeaderGrid, CoinSymbol, DeleteIcon } from "../styles/Layout";
 
 /**
  * coin header grid
@@ -8,11 +8,15 @@ import { CoinHeaderGrid, CoinSymbol } from "../styles/Layout";
  * @returns {*}
  * @constructor
  */
-export const CoinHeader = ({ name, symbol }) => {
+export const CoinHeader = ({ name, symbol, topSection }) => {
   return (
     <CoinHeaderGrid>
       <div>{name}</div>
-      <CoinSymbol>{symbol}</CoinSymbol>
+      {topSection ? (
+        <DeleteIcon>X</DeleteIcon>
+      ) : (
+        <CoinSymbol>{symbol}</CoinSymbol>
+      )}
     </CoinHeaderGrid>
   );
 };

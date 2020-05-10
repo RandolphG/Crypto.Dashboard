@@ -126,3 +126,27 @@ export const CoinHeaderGrid = styled.div`
 export const CoinSymbol = styled.div`
   justify-self: right;
 `;
+
+// DELETE TILE
+export const DeleteTile = styled(SelectableTile)`
+  &:hover {
+    cursor: pointer;
+    ${redBoxShadow}
+  }
+`;
+
+// DISABLED TILE
+export const DisabledTile = styled(Tile)`
+  pointer-events: none;
+  opacity: 0.4;
+`;
+
+// DELETE ICON
+export const DeleteIcon = styled.div`
+  justify-self: right;
+  display: none;
+  ${DeleteTile}:hover & {
+    display: block;
+    color: red;
+  }
+`;

@@ -8,17 +8,23 @@ import { CoinTile } from "./CoinTile";
  * @param coins
  * @returns {string[]}
  */
-const displayCoins = (coins) => {
-  return Object.keys(coins).slice(0, 40);
+const displayCoins = (coins, topSection) => {
+  return Object.keys(coins).slice(0, topSection ? 5 : 40);
 };
 
-export const CoinGrid = () => {
+/**
+ * coin grid
+ * @param topSection
+ * @returns {*}
+ * @constructor
+ */
+export const CoinGrid = ({ topSection }) => {
   const { coins } = useGlobalStateContext(StateContext);
 
   return (
     <CoinGridDiv>
-      {displayCoins(coins).map((coinKey) => (
-        <CoinTile key={coinKey} coinKey={coinKey} />
+      {displayCoins(coins, topSection).map((coinKey) => (
+        <CoinTile topSection={topSection} key={coinKey} coinKey={coinKey} />
       ))}
     </CoinGridDiv>
   );
