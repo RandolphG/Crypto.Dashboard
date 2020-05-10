@@ -3,6 +3,7 @@ import { Confirm } from "./ConfirmButton";
 import { Welcome } from "./WelcomeMsg";
 import Page from "../Shared/Page";
 import { CoinGrid } from "./CoinGrid";
+import Search from "./Search";
 
 export default function Settings() {
   return (
@@ -10,6 +11,7 @@ export default function Settings() {
       <Welcome />
       <CoinGrid topSection />
       <Confirm />
+      <Search />
       <CoinGrid />
     </Page>
   );

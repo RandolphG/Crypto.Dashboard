@@ -4,6 +4,8 @@ import {
   fontSize1,
   greenBoxShadow,
   color3,
+  backgroundColor2,
+  fontSize2,
   subtleBoxShadow,
   lightBlueBackground,
   redBoxShadow,
@@ -151,4 +153,20 @@ export const DeleteIcon = styled.div`
     display: block;
     color: red;
   }
+`;
+
+// SEARCH DIV
+export const SearchBar = styled.div`
+  display: grid;
+  grid-template-columns: 200px 1fr;
+`;
+
+// SEARCH INPUT
+export const SearchInput = styled.input`
+  border: 1px solid;
+  height: 25px;
+  ${backgroundColor2}
+  ${fontSize2}
+  color:#1163c9;
+  place-self: center left;
 `;
