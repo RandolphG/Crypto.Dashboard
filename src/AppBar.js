@@ -1,8 +1,6 @@
 import React from "react";
 import { StateContext, useGlobalStateContext } from "./GlobalContext";
 import { Bar, LOGO, StyledBtn } from "./styles/Layout";
-import "splitting/dist/splitting.css";
-import "splitting/dist/splitting-cells.css";
 
 /**
  * button component

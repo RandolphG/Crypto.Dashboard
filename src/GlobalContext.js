@@ -1,17 +1,16 @@
-import React, { createContext, useReducer, useContext } from "react";
+import React, { createContext, useReducer, useContext, useEffect } from "react";
 import { GlobalStyle } from "./styles/Layout";
 import AppBar from "./AppBar";
 import Settings from "./Settings";
+import { Content } from "./Shared/Content";
+
 const cc = require("cryptocompare");
 
 // INITIAL STATE
 const initialState = {
   page: "dashboard",
   firstVisit: false,
-  coinList: async () => {
-    let coins = fetchCoins();
-    await SetCoins(coins);
-  },
+  coins: [],
 };
 
 // ACTIONS
@@ -20,30 +19,23 @@ const actions = {
   SAVE_SETTINGS: "SAVE_SETTINGS",
   CONFIRM_FAVORITES: "CONFIRM_FAVORITES",
   FIRST_VISIT: "FIRST_VISIT",
-  COIN_LIST: "COIN_LIST",
+  SET_COINS_LIST: "SET_COINS_LIST",
 };
-
-/**
- *
- * @param coins
- * @returns {Promise<void>}
- * @constructor
- */
-async function SetCoins(coins) {
-  console.log(coins);
-  const [dispatch] = useReducer(reducer);
-  dispatch({ type: actions.COIN_LIST, coins });
-  return <div></div>;
-}
 
 /**
  *
  * @returns {Promise<*>}
  */
 const fetchCoins = async () => {
-  let coinList = (await cc.coinList()).Data;
-  console.log(coinList);
-  return coinList;
+  console.log("FUNC fetchCoins()");
+  try {
+    const coins = (await cc.coinList()).Data;
+    return coins;
+  } catch (e) {
+    if (e) {
+      console.log(e);
+    }
+  }
 };
 
 /**
@@ -51,8 +43,7 @@ const fetchCoins = async () => {
  * @returns {{page: string}}
  */
 function SaveSettings() {
-  console.log("SAVING SETTINGS");
-
+  console.log("FUNC saveSettings()");
   let data = JSON.parse(localStorage.getItem("cryptodash"));
   if (!data) {
     return { page: "settings", firstVisit: true };
@@ -64,7 +55,7 @@ function SaveSettings() {
  * confirm address
  */
 const confirmFavorites = () => {
-  console.log("confirmFavorites");
+  console.log("FUNC confirmFavorites()");
   localStorage.setItem("cryptodash", JSON.stringify("test"));
 };
 
@@ -80,8 +71,9 @@ export const StateContext = createContext();
  */
 const reducer = (state, action) => {
   console.log(
-    `--> REDUCE ACTION TYPE : ${action.type} | STATE : `,
-    action.payload
+    `--> ACTION TYPE : ${action.type} | STATE : `,
+    action.payload,
+    `<--`
   );
   switch (action.type) {
     case actions.SET_PAGE:
@@ -104,10 +96,10 @@ const reducer = (state, action) => {
         ...state,
         confirmFavorites: confirmFavorites(),
       };
-    case actions.COIN_LIST:
+    case actions.SET_COINS_LIST:
       return {
         ...state,
-        coinList: action.coinList,
+        coins: action.coins,
       };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -115,7 +107,7 @@ const reducer = (state, action) => {
 };
 
 /**
- * global context
+ * global context fir entire app
  * @returns {*}
  * @constructor
  */
@@ -124,7 +116,9 @@ export default function GlobalContext() {
     <GlobalProvider>
       <GlobalStyle />
       <AppBar />
-      <Settings />
+      <Content>
+        <Settings />
+      </Content>
     </GlobalProvider>
   );
 }
@@ -141,8 +135,11 @@ function GlobalProvider({ children }) {
   const value = {
     firstVisit: state.firstVisit,
     page: state.page,
-    coinList: state.coinList,
-    SaveSettings: async () => {
+    coins: state.coins,
+    setPage: async (page) => {
+      dispatch({ type: actions.SET_PAGE, page });
+    },
+    SaveSettings: () => {
       dispatch({ type: actions.SAVE_SETTINGS });
     },
     confirmFavorites: (visit) => {
@@ -152,6 +149,17 @@ function GlobalProvider({ children }) {
       dispatch({ type: actions.SET_PAGE, page: "dashboard" });
     },
   };
+
+  useEffect(() => {
+    fetchCoins()
+      .then((coins) => {
+        return coins;
+      })
+      .then((data) => {
+        dispatch({ type: actions.SET_COINS_LIST, coins: data });
+      });
+    console.log(` GLOBAL PROVIDER MOUNTED`);
+  }, []);
 
   return (
     <StateContext.Provider value={value}>{children}</StateContext.Provider>
