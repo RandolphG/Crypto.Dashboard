@@ -22,7 +22,7 @@ body {
 }
 `;
 
-// LAYOUT STYLED COMPONENT
+// LAYOUT DIV
 export const Layout = styled.div`
   cursor: crosshair;
   display: grid;
@@ -39,7 +39,7 @@ export const Layout = styled.div`
   -moz-osx-font-smoothing: grayscale;
 `;
 
-// BAR STYLED COMPONENT
+// BAR DIV
 export const Bar = styled.div`
   margin-bottom: 32px;
   display: grid;
@@ -47,13 +47,13 @@ export const Bar = styled.div`
   font-size: 1rem;
 `;
 
-// LOGO STYLED COMPONENT
+// LOGO DIV
 export const LOGO = styled.div`
   margin-left: 16px;
   font-size: 2rem;
 `;
 
-// CONTROLBTN STYLED COMPONENT
+// CONTROLBTN DIV
 export const StyledBtn = styled.div`
   font-size: 1rem;
   cursor: pointer;
@@ -78,4 +78,10 @@ export const ConfirmBtn = styled.div`
 export const CenterDiv = styled.div`
   display: grid;
   justify-content: center;
+`;
+
+// COIN GRID DIV
+export const CoinGridDiv = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
 `;

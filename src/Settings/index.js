@@ -2,6 +2,7 @@ import React from "react";
 import { Confirm } from "./ConfirmButton";
 import { Welcome } from "./WelcomeMsg";
 import Page from "../Shared/Page";
+import { CoinGrid } from "./CoinGrid";
 
 export default function Settings() {
   return (
@@ -9,6 +10,7 @@ export default function Settings() {
       SETTINGS
       <Welcome />
       <Confirm />
+      <CoinGrid />
     </Page>
   );
 }

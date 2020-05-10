@@ -151,14 +151,10 @@ function GlobalProvider({ children }) {
   };
 
   useEffect(() => {
-    fetchCoins()
-      .then((coins) => {
-        return coins;
-      })
-      .then((data) => {
-        dispatch({ type: actions.SET_COINS_LIST, coins: data });
-      });
     console.log(` GLOBAL PROVIDER MOUNTED`);
+    fetchCoins().then((coins) => {
+      dispatch({ type: actions.SET_COINS_LIST, coins: coins });
+    });
   }, []);
 
   return (
