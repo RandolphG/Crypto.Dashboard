@@ -3,12 +3,14 @@ import { GlobalStyle } from "./styles/Layout";
 import AppBar from "./AppBar";
 import Settings from "./Settings";
 import { Content } from "./Shared/Content";
+import _ from "lodash";
 
 const cc = require("cryptocompare");
 
 // INITIAL STATE
 const initialState = {
   page: "dashboard",
+  favorites: ["XPY", "CRAIG", "XMR", "DOGE", "PRC"],
   firstVisit: false,
   coins: [],
 };
@@ -21,6 +23,8 @@ const actions = {
   FIRST_VISIT: "FIRST_VISIT",
   SET_COINS_LIST: "SET_COINS_LIST",
   DISPLAY_COINS: "DISPLAY_COINS",
+  ADD_COIN: "ADD_COIN",
+  MAX_FAVORITES: 5,
 };
 
 /**
@@ -41,7 +45,7 @@ const fetchCoins = async () => {
 
 /**
  *
- * @returns {{page: string}}
+ * @returns {{favorites}}
  */
 const saveSettings = () => {
   console.log("FUNC saveSettings()");
@@ -49,15 +53,16 @@ const saveSettings = () => {
   if (!data) {
     return { page: "settings", firstVisit: true };
   }
-  return {};
+  // let { favorites } = data;
+  // return { favorites };
 };
 
 /**
  * confirm address
  */
-const confirmFavorites = () => {
+const confirmFavorites = (text) => {
   console.log("FUNC confirmFavorites()");
-  localStorage.setItem("cryptodash", JSON.stringify("test"));
+  localStorage.setItem("cryptodash", JSON.stringify({ favorites: text }));
 };
 
 // CONTEXT
@@ -82,6 +87,11 @@ const reducer = (state, action) => {
         ...state,
         page: action.page,
       };
+    case actions.ADD_COIN:
+      return {
+        ...state,
+        favorites: action.favorites,
+      };
     case actions.SAVE_SETTINGS:
       return {
         ...state,
@@ -95,7 +105,7 @@ const reducer = (state, action) => {
     case actions.CONFIRM_FAVORITES:
       return {
         ...state,
-        confirmFavorites: confirmFavorites(),
+        confirmFavorites: confirmFavorites(action.payload),
       };
     case actions.SET_COINS_LIST:
       return {
@@ -132,11 +142,11 @@ export default function GlobalContext() {
  */
 function GlobalProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const value = {
     firstVisit: state.firstVisit,
     page: state.page,
     coins: state.coins,
+    favorites: state.favorites,
     setPage: async (page) => {
       dispatch({ type: actions.SET_PAGE, page });
     },
@@ -145,9 +155,23 @@ function GlobalProvider({ children }) {
     },
     confirmFavorites: (visit) => {
       console.log(`first visit: `, visit);
-      dispatch({ type: actions.CONFIRM_FAVORITES });
       dispatch({ type: actions.FIRST_VISIT });
       dispatch({ type: actions.SET_PAGE, page: "dashboard" });
+      localStorage.setItem(
+        "cryptodash",
+        JSON.stringify({ favorites: state.favorites })
+      );
+    },
+    addCoin: (key) => {
+      let favorites = [...state.favorites];
+      if (favorites.length < actions.MAX_FAVORITES) {
+        favorites.push(key);
+        dispatch({ type: actions.ADD_COIN, favorites: favorites });
+      }
+    },
+    removeCoin: (key) => {
+      let favorites = [...state.favorites];
+      dispatch({ type: actions.ADD_COIN, favorites: _.pull(favorites, key) });
     },
   };
 

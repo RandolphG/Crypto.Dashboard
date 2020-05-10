@@ -118,6 +118,8 @@ export const SelectableTile = styled(Tile)`
 
 // COIN HEADER GRID DIV
 export const CoinHeaderGrid = styled.div`
+  font-size: 0.75rem;
+  margin-bottom: 0.2rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
 `;
