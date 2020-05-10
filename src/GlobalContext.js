@@ -20,6 +20,7 @@ const actions = {
   CONFIRM_FAVORITES: "CONFIRM_FAVORITES",
   FIRST_VISIT: "FIRST_VISIT",
   SET_COINS_LIST: "SET_COINS_LIST",
+  DISPLAY_COINS: "DISPLAY_COINS",
 };
 
 /**
@@ -42,14 +43,14 @@ const fetchCoins = async () => {
  *
  * @returns {{page: string}}
  */
-function SaveSettings() {
+const saveSettings = () => {
   console.log("FUNC saveSettings()");
   let data = JSON.parse(localStorage.getItem("cryptodash"));
   if (!data) {
     return { page: "settings", firstVisit: true };
   }
   return {};
-}
+};
 
 /**
  * confirm address
@@ -84,7 +85,7 @@ const reducer = (state, action) => {
     case actions.SAVE_SETTINGS:
       return {
         ...state,
-        SaveSettings: SaveSettings(),
+        saveSettings: saveSettings(),
       };
     case actions.FIRST_VISIT:
       return {
@@ -139,7 +140,7 @@ function GlobalProvider({ children }) {
     setPage: async (page) => {
       dispatch({ type: actions.SET_PAGE, page });
     },
-    SaveSettings: () => {
+    saveSettings: () => {
       dispatch({ type: actions.SAVE_SETTINGS });
     },
     confirmFavorites: (visit) => {

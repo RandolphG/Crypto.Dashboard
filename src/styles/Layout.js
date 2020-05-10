@@ -115,3 +115,14 @@ export const SelectableTile = styled(Tile)`
     ${greenBoxShadow}
   }
 `;
+
+// COIN HEADER GRID DIV
+export const CoinHeaderGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+`;
+
+// COIN SYMBOL
+export const CoinSymbol = styled.div`
+  justify-self: right;
+`;
