@@ -97,7 +97,7 @@ export const CenterDiv = styled.div`
 export const CoinGridDiv = styled.div`
   margin: 0 16px;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   grid-gap: 14px;
 `;
 
