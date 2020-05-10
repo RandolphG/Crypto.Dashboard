@@ -1,5 +1,13 @@
 import styled, { css, createGlobalStyle } from "styled-components";
 import normalize from "styled-normalize";
+import {
+  fontSize1,
+  greenBoxShadow,
+  color3,
+  subtleBoxShadow,
+  lightBlueBackground,
+  redBoxShadow,
+} from "../Shared/Styles";
 
 export const GlobalStyle = createGlobalStyle`
 ${normalize}
@@ -71,7 +79,12 @@ export const StyledBtn = styled.div`
 // CONFIRM BTN
 export const ConfirmBtn = styled.div`
   margin: 20px;
-  color: green;
+  color: ${color3} ${fontSize1};
+  padding: 5px;
+  cursor: pointer;
+  &:hover {
+    ${greenBoxShadow}
+  }
 `;
 
 // CENTER DIV
@@ -82,6 +95,23 @@ export const CenterDiv = styled.div`
 
 // COIN GRID DIV
 export const CoinGridDiv = styled.div`
+  margin: 0 16px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  grid-gap: 14px;
+`;
+
+// TILE DIV
+export const Tile = styled.div`
+  ${subtleBoxShadow}
+  ${lightBlueBackground}
+  padding:10px;
+`;
+
+// SELECTABLE TILE DIV
+export const SelectableTile = styled(Tile)`
+  &:hover {
+    cursor: pointer;
+    ${greenBoxShadow}
+  }
 `;

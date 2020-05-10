@@ -24,9 +24,7 @@ const AppBar = () => {
     <Bar>
       <LOGO>
         <p>
-          <span className={"line2"} data-splitting>
-            CRYPTO-DASH
-          </span>
+          <span>CRYPTO-DASH</span>
         </p>
       </LOGO>
       <ControlBtn name={"dashboard"} />
