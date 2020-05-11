@@ -11,6 +11,7 @@ const cc = require("cryptocompare");
 const initialState = {
   page: "dashboard",
   favorites: ["XPY", "CRAIG", "XMR", "DOGE", "PRC"],
+  filteredCoins: [],
   firstVisit: false,
   coins: [],
 };
@@ -24,6 +25,7 @@ const actions = {
   SET_COINS_LIST: "SET_COINS_LIST",
   DISPLAY_COINS: "DISPLAY_COINS",
   ADD_COIN: "ADD_COIN",
+  FILTERED_COINS: "FILTERED_COINS",
   MAX_FAVORITES: 5,
 };
 
@@ -107,6 +109,11 @@ const reducer = (state, action) => {
         ...state,
         confirmFavorites: confirmFavorites(action.payload),
       };
+    case actions.FILTERED_COINS:
+      return {
+        ...state,
+        filteredCoins: action.payload,
+      };
     case actions.SET_COINS_LIST:
       return {
         ...state,
@@ -146,6 +153,7 @@ function GlobalProvider({ children }) {
     firstVisit: state.firstVisit,
     page: state.page,
     coins: state.coins,
+    filteredCoins: state.filteredCoins,
     favorites: state.favorites,
     setPage: async (page) => {
       dispatch({ type: actions.SET_PAGE, page });
@@ -172,6 +180,9 @@ function GlobalProvider({ children }) {
     removeCoin: (key) => {
       let favorites = [...state.favorites];
       dispatch({ type: actions.ADD_COIN, favorites: _.pull(favorites, key) });
+    },
+    setFilteredCoins: (filteredCoins) => {
+      dispatch({ type: actions.FILTERED_COINS, filteredCoins });
     },
   };
 
