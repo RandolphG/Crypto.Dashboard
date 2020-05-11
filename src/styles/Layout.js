@@ -1,5 +1,7 @@
 import styled, { css, createGlobalStyle } from "styled-components";
 import normalize from "styled-normalize";
+import { motion } from "framer-motion";
+
 import {
   fontSize1,
   greenBoxShadow,
@@ -53,18 +55,12 @@ export const Layout = styled.div`
 export const Bar = styled.div`
   margin-bottom: 32px;
   display: grid;
-  grid-template-columns: 190px auto 100px 100px;
+  grid-template-columns: 180px auto 100px 100px;
   font-size: 1rem;
 `;
 
-// LOGO DIV
-export const LOGO = styled.div`
-  margin-left: 16px;
-  font-size: 2rem;
-`;
-
 // CONTROLBTN DIV
-export const StyledBtn = styled.div`
+export const StyledBtn = styled(motion.div)`
   font-size: 1rem;
   cursor: pointer;
   color: white;

@@ -1,6 +1,7 @@
 import React from "react";
 import { StateContext, useGlobalStateContext } from "./GlobalContext";
-import { Bar, LOGO, StyledBtn } from "./styles/Layout";
+import { Bar, StyledBtn } from "./styles/Layout";
+import { BitLogo } from "./Logo";
 
 /**
  * button component
@@ -13,7 +14,12 @@ function ControlBtn({ name, active }) {
   const { page, setPage } = useGlobalStateContext(StateContext);
 
   return (
-    <StyledBtn active={page === name} onClick={() => setPage(name)}>
+    <StyledBtn
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0, transition: { duration: 1 } }}
+      active={page === name}
+      onClick={() => setPage(name)}
+    >
       {name}
     </StyledBtn>
   );
@@ -22,11 +28,8 @@ function ControlBtn({ name, active }) {
 const AppBar = () => {
   return (
     <Bar>
-      <LOGO>
-        <p>
-          <span>CRYPTO-DASH</span>
-        </p>
-      </LOGO>
+      <BitLogo />
+      <div />
       <ControlBtn name={"dashboard"} />
       <ControlBtn name={"settings"} />
     </Bar>

@@ -12,6 +12,7 @@ const initialState = {
   page: "dashboard",
   favorites: ["XPY", "CRAIG", "XMR", "DOGE", "PRC"],
   filteredCoins: [],
+  prices: [],
   firstVisit: false,
   coins: [],
 };
@@ -26,6 +27,7 @@ const actions = {
   DISPLAY_COINS: "DISPLAY_COINS",
   ADD_COIN: "ADD_COIN",
   FILTERED_COINS: "FILTERED_COINS",
+  SET_PRICES: "SET_PRICES",
   MAX_FAVORITES: 5,
 };
 
@@ -45,6 +47,38 @@ const fetchCoins = async () => {
   }
 };
 
+/**
+ *
+ * @returns {Promise<void>}
+ */
+const price = async () => {};
+
+/**
+ *
+ * @returns {Promise<[]>}
+ */
+const fetchPrices = async (favorites) => {
+  let prices = await getPrice(favorites).then((prices) => {
+    return prices;
+  });
+  return prices;
+};
+
+const getPrice = async (favorites) => {
+  let data = [];
+  for (let i = 0; i < favorites.length; i++) {
+    try {
+      let priceData = await cc.priceFull(favorites[i], "USD").then((prices) => {
+        return prices;
+      });
+      data.push(priceData);
+    } catch (e) {
+      console.warn("Fetch data error: ", e);
+    }
+  }
+  console.log(`price data: `, data);
+  return data;
+};
 /**
  *
  * @returns {{favorites}}
@@ -119,6 +153,11 @@ const reducer = (state, action) => {
         ...state,
         coins: action.coins,
       };
+    case actions.SET_PRICES:
+      return {
+        ...state,
+        prices: action.prices,
+      };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
@@ -152,35 +191,40 @@ function GlobalProvider({ children }) {
   const value = {
     firstVisit: state.firstVisit,
     page: state.page,
+    prices: state.prices,
     coins: state.coins,
     filteredCoins: state.filteredCoins,
     favorites: state.favorites,
+    //set page of app
     setPage: async (page) => {
       dispatch({ type: actions.SET_PAGE, page });
-    },
+    }, // save settings
     saveSettings: () => {
       dispatch({ type: actions.SAVE_SETTINGS });
-    },
+    }, // confirm favorite bitcoins
     confirmFavorites: (visit) => {
       console.log(`first visit: `, visit);
       dispatch({ type: actions.FIRST_VISIT });
       dispatch({ type: actions.SET_PAGE, page: "dashboard" });
+      let prices = fetchPrices(state.favorites);
+      console.log(prices);
+      dispatch({ type: actions.SET_PRICES, prices: prices });
       localStorage.setItem(
         "cryptodash",
         JSON.stringify({ favorites: state.favorites })
       );
-    },
+    }, // add coins
     addCoin: (key) => {
       let favorites = [...state.favorites];
       if (favorites.length < actions.MAX_FAVORITES) {
         favorites.push(key);
         dispatch({ type: actions.ADD_COIN, favorites: favorites });
       }
-    },
+    }, // remove coins
     removeCoin: (key) => {
       let favorites = [...state.favorites];
       dispatch({ type: actions.ADD_COIN, favorites: _.pull(favorites, key) });
-    },
+    }, // set filter coins
     setFilteredCoins: (filteredCoins) => {
       dispatch({ type: actions.FILTERED_COINS, filteredCoins });
     },
@@ -191,6 +235,8 @@ function GlobalProvider({ children }) {
     fetchCoins().then((coins) => {
       dispatch({ type: actions.SET_COINS_LIST, coins: coins });
     });
+    let prices = fetchPrices(state.favorites);
+    dispatch({ type: actions.SET_PRICES, prices: prices });
   }, []);
 
   return (
